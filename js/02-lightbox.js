@@ -3,20 +3,16 @@ import { galleryItems } from './gallery-items.js';
 
 console.log(galleryItems);
 
-const imgTarget = document.querySelector('.gallery')
-const itemTarget = []
+const imgTarget = document.querySelector('.gallery');
+const imgMarkup = galleryItems.map(({ preview, description, original }) =>
+      `<a class="gallery__item" href="${original}">
+		<img class="gallery__image" src="${preview}" alt="${description}" /></a>`
+  ).join('');
 
-galleryItems.forEach(elem => {
-    const galleryLink = document.createElement('a')
-	galleryLink.className = 'gallery__link'
-	galleryLink.href = elem.original
-	const galleryImg = document.createElement('img')
-	galleryImg.className = 'gallery__image'
-	galleryImg.src = elem.preview
-	galleryImg.setAttribute('title', elem.description)
-	galleryImg.alt = elem.description
+imgTarget.insertAdjacentHTML('beforeend', imgMarkup);
 
-	galleryLink.append(galleryImg)
-	itemTarget.push(galleryLink)
-})
-imgTarget.append(...itemTarget)
+new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+  captionPosition: 'bottom',
+});
