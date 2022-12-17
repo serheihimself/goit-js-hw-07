@@ -1,26 +1,18 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
-
 console.log(galleryItems);
 
-const gallery = document.querySelector('.gallery');
-const items = [];
+const imgElem = document.querySelector('.gallery');
+const imgMarkup = getCards(galleryItems);
 
-galleryItems.forEach(elem => {
-  const galleryLink = document.createElement('a');
-  galleryLink.className = 'gallery__link';
-  galleryLink.href = elem.original;
-  const galleryImage = document.createElement('img');
-  galleryImage.className = 'gallery__image';
-  galleryImage.src = elem.preview;
-  galleryImage.setAttribute('title', elem.description);
-  galleryImage.alt = elem.description;
+imgElem.insertAdjacentElement('beforeend', imgMarkup);
+imgElem.addEventListener('click', onImgClick);
 
-  galleryLink.append(galleryImage);
-  items.push(galleryLink);
-});
-gallery.append(...items);
-
-new SimpleLightbox('.gallery a', {
-  captionDelay: 250,
-});
+function getCards() {
+  return galleryItems.map(({ preview, original, description })=> {
+    return `<div class="gallery__item"><a class="gallery__link" href="${original}">
+        <img class="gallery__image" src="${preview}" 
+        data-source="${original}" alt="${description}"/></a>
+    </div>`;
+  }).join("")
+}
